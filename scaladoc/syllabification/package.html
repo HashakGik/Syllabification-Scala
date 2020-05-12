@@ -1,0 +1,296 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>syllabification - Syllabification documentation - syllabification</title>
+          <meta name="description" content="syllabification - Syllabification documentation - syllabification" />
+          <meta name="keywords" content="syllabification Syllabification documentation syllabification" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'syllabification.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../lib/package_big.png" />
+        
+        <h1>syllabification</h1><span class="permalink">
+      <a href="../index.html#syllabification.package" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">syllabification</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="syllabification.CharacterSequence" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="CharacterSequenceextendsSerializable"></a>
+      <a id="CharacterSequence:CharacterSequence"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CharacterSequence.html"><span class="name">CharacterSequence</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@CharacterSequenceextendsSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait implementing utility methods for character sequences.</p><div class="fullcomment"><div class="comment cmt"><p>Trait implementing utility methods for character sequences.
+Since <a href="../SparkRun1.html" class="extype" name="SparkRun1">.SparkRun1</a> and <a href="../SparkRun2.html" class="extype" name="SparkRun2">.SparkRun2</a> create RDDs of <a href="Word.html" class="extype" name="syllabification.Word">syllabification.Word</a>s and <a href="Syllable.html" class="extype" name="syllabification.Syllable">syllabification.Syllable</a>s, it must be <span class="extype" name="Serializable">Serializable</span>.
+</p></div></div>
+    </li><li name="syllabification.CharacterSequenceTest" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CharacterSequenceTestextendsAnyFunSuite"></a>
+      <a id="CharacterSequenceTest:CharacterSequenceTest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CharacterSequenceTest.html"><span class="name">CharacterSequenceTest</span></a><span class="result"> extends <span class="extype" name="org.scalatest.funsuite.AnyFunSuite">AnyFunSuite</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@CharacterSequenceTestextendsAnyFunSuite" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Test suite for the correct handling of special characters.</p>
+    </li><li name="syllabification.Page" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PageextendsCharacterSequencewithProductwithSerializable"></a>
+      <a id="Page:Page"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Page.html"><span class="name">Page</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Int">Int</span></span>, <span name="start">start: <span class="extype" name="scala.Int">Int</span></span>, <span name="end">end: <span class="extype" name="scala.Int">Int</span></span>, <span name="str">str: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="CharacterSequence.html" class="extype" name="syllabification.CharacterSequence">CharacterSequence</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@PageextendsCharacterSequencewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Case class encapsulating a single page to work on.</p><div class="fullcomment"><div class="comment cmt"><p>Case class encapsulating a single page to work on.</p></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>Page id, in case of out-of-order processing, it can be used to sort the output correctly.</p></dd><dt class="param">start</dt><dd class="cmt"><p>Index of the first character of the page inside the original text.</p></dd><dt class="param">end</dt><dd class="cmt"><p>Index of the last character of the page inside the original text.</p></dd><dt class="param">str</dt><dd class="cmt"><p>Content of the page.</p></dd></dl><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>Except for str, the other values are not used in the current implementation.</p></span></dd></dl></div>
+    </li><li name="syllabification.Splitter" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="SplitterextendsSerializable"></a>
+      <a id="Splitter:Splitter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Splitter.html"><span class="name">Splitter</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@SplitterextendsSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait implementing between-words splitting procedures.</p><div class="fullcomment"><div class="comment cmt"><p>Trait implementing between-words splitting procedures.
+Since <a href="../SparkRun1.html" class="extype" name="SparkRun1">SparkRun1</a> creates an RDD of splitters, it must be <span class="extype" name="Serializable">Serializable</span>.
+</p></div></div>
+    </li><li name="syllabification.SplitterTest" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SplitterTestextendsAnyFunSuite"></a>
+      <a id="SplitterTest:SplitterTest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SplitterTest.html"><span class="name">SplitterTest</span></a><span class="result"> extends <span class="extype" name="org.scalatest.funsuite.AnyFunSuite">AnyFunSuite</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@SplitterTestextendsAnyFunSuite" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Test suite for the correct splitting of spaces between words.</p>
+    </li><li name="syllabification.Syllable" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SyllableextendsCharacterSequencewithProductwithSerializable"></a>
+      <a id="Syllable:Syllable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Syllable.html"><span class="name">Syllable</span></a><span class="params">(<span name="str">str: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="CharacterSequence.html" class="extype" name="syllabification.CharacterSequence">CharacterSequence</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@SyllableextendsCharacterSequencewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Case class encapsulating a single syllable.</p><div class="fullcomment"><div class="comment cmt"><p>Case class encapsulating a single syllable. It's just a container for a <a href="CharacterSequence.html" class="extype" name="syllabification.CharacterSequence">syllabification.CharacterSequence</a>.</p></div><dl class="paramcmts block"><dt class="param">str</dt><dd class="cmt"><p>The stored syllable.</p></dd></dl></div>
+    </li><li name="syllabification.VerseTest" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VerseTestextendsAnyFunSuite"></a>
+      <a id="VerseTest:VerseTest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="VerseTest.html"><span class="name">VerseTest</span></a><span class="result"> extends <span class="extype" name="org.scalatest.funsuite.AnyFunSuite">AnyFunSuite</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@VerseTestextendsAnyFunSuite" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Test suite for the correct syllabification of entire verses.</p>
+    </li><li name="syllabification.Word" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="WordextendsCharacterSequencewithProductwithSerializable"></a>
+      <a id="Word:Word"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Word.html"><span class="name">Word</span></a><span class="params">(<span name="str">str: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="id">id: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">0</span></span>)</span><span class="result"> extends <a href="CharacterSequence.html" class="extype" name="syllabification.CharacterSequence">CharacterSequence</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@WordextendsCharacterSequencewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Case class encapsulating a single word.</p><div class="fullcomment"><div class="comment cmt"><p>Case class encapsulating a single word.
+</p></div><dl class="paramcmts block"><dt class="param">str</dt><dd class="cmt"><p>The stored word.</p></dd><dt class="param">id</dt><dd class="cmt"><p>Word id, in case of out-of-order processing, it can be used to sort the output correctly. Not used in the current implementation.</p></dd></dl><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>Due to some splits being inacceptable (@see <a href="Splitter.html#split(area:String):scala.collection.immutable.Queue[Int]" class="extmbr" name="syllabification.Splitter#split">syllabification.Splitter.split</a>), it may store whitespaces as well.</p></span>, <span class="cmt"><p>The characters #, §, {, } are used internally to process the word's syllables: to avoid conflicts, the original text MUST NOT contain them.</p></span></dd></dl></div>
+    </li><li name="syllabification.WordSplitter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WordSplitterextendsSplitter"></a>
+      <a id="WordSplitter:WordSplitter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="WordSplitter.html"><span class="name">WordSplitter</span></a><span class="result"> extends <a href="Splitter.html" class="extype" name="syllabification.Splitter">Splitter</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@WordSplitterextendsSplitter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Class which splits a <a href="Page.html" class="extype" name="syllabification.Page">syllabification.Page</a> into a queue of <a href="Word.html" class="extype" name="syllabification.Word">syllabification.Word</a>s.</p>
+    </li><li name="syllabification.WordTest" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WordTestextendsAnyFunSuite"></a>
+      <a id="WordTest:WordTest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="WordTest.html"><span class="name">WordTest</span></a><span class="result"> extends <span class="extype" name="org.scalatest.funsuite.AnyFunSuite">AnyFunSuite</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@WordTestextendsAnyFunSuite" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Test suite for the correct syllabification of single words.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="syllabification.ChunkSplitter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ChunkSplitter"></a>
+      <a id="ChunkSplitter:ChunkSplitter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ChunkSplitter$.html"><span class="name">ChunkSplitter</span></a><span class="result"> extends <a href="Splitter.html" class="extype" name="syllabification.Splitter">Splitter</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../index.html#syllabification.package@ChunkSplitter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Singleton which splits a block of text into a series of <a href="Page.html" class="extype" name="syllabification.Page">syllabification.Page</a>s.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

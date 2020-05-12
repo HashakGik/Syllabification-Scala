@@ -1,0 +1,453 @@
+################################
+Evaluating the performance with respect to the original dataset.
+################################
+Profiling the sequential execution on file "La Divina Commedia.txt", split into 4 chunks (profiling averaged over 5 runs)...
+Total (averaged) running time: 47921.384041 ms, of which:
+	43.373189 ms for reading the file and splitting into chunks,
+	47829.655373 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk,
+	35.288367 ms for merging the dictionaries into one,
+	13.067112 ms for sorting and extracting the centiles.
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 4 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 22331.325159 ms, of which:
+	4.747231 ms for reading the file and splitting into chunks (sequential),
+	22294.380319 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	23.938964 ms for merging the dictionaries into one (sequential),
+	8.258645 ms for sorting and extracting the centiles (sequential).
+
+Profiling the distributed execution on file "La Divina Commedia.txt", split into 4 chunks (profiling CANNOT be averaged). Each chunk is processed by a different node...
+Total (averaged) running time: 28251.505847 ms, of which:
+	2071.806305 ms for initializing Spark,
+	455.901307 ms for reading the file and splitting into chunks (sequential),
+	12477.873347 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (distributed),
+	13245.924888 ms for sorting and extracting the centiles and shutting down Spark (sequential).
+
+Profiling the distributed execution on file "La Divina Commedia.txt" with no prior splitting (profiling CANNOT be averaged). The number of nodes is chosen by Spark...
+Total (averaged) running time: 87137.502624 ms, of which:
+	94.868064 ms for initializing Spark,
+	85781.084591 ms for reading the file, splitting into syllables and distributing the dataset (sequential),
+	68.578017 ms for building a dictionary of occurrences (distributed),
+	1192.971952 ms for sorting, extracting the centiles and shutting down Spark (sequential).
+
+################################
+Evaluating the performance with respect to a large file (original dataset repeated 5 times).
+################################
+Profiling the sequential execution on file "La Divina Commedia large.txt", split into 20 chunks (profiling averaged over 1 runs)...
+Total (averaged) running time: 120579.490592 ms, of which:
+	146.525242 ms for reading the file and splitting into chunks,
+	120350.432459 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk,
+	74.738705 ms for merging the dictionaries into one,
+	7.794186 ms for sorting and extracting the centiles.
+
+Profiling the parallel execution on file "La Divina Commedia large.txt", split into 4 chunks (profiling averaged over 1 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 868129.68767 ms, of which:
+	17.891034 ms for reading the file and splitting into chunks (sequential),
+	868027.865307 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	79.395727 ms for merging the dictionaries into one (sequential),
+	4.535602 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia large.txt", split into 20 chunks (profiling averaged over 1 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 128893.426905 ms, of which:
+	25.154574 ms for reading the file and splitting into chunks (sequential),
+	128778.366806 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	86.232037 ms for merging the dictionaries into one (sequential),
+	3.673488 ms for sorting and extracting the centiles (sequential).
+
+Profiling the distributed execution on file "La Divina Commedia large.txt", split into 4 chunks (profiling CANNOT be averaged). Each chunk is processed by a different node...
+Total (averaged) running time: 915925.616725 ms, of which:
+	92.588818 ms for initializing Spark,
+	18.736855 ms for reading the file and splitting into chunks (sequential),
+	450822.463004 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (distributed),
+	464991.828048 ms for sorting and extracting the centiles and shutting down Spark (sequential).
+
+Profiling the distributed execution on file "La Divina Commedia large.txt", split into 20 chunks (profiling CANNOT be averaged). Each chunk is processed by a different node...
+Total (averaged) running time: 130161.278223 ms, of which:
+	106.107016 ms for initializing Spark,
+	25.575075 ms for reading the file and splitting into chunks (sequential),
+	64008.332417 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (distributed),
+	66021.263715 ms for sorting and extracting the centiles and shutting down Spark (sequential).
+
+Profiling the distributed execution on file "La Divina Commedia large.txt" with no prior splitting (profiling CANNOT be averaged). The number of nodes is chosen by Spark...
+Total (averaged) running time: 2619571.396736 ms, of which:
+	85.595452 ms for initializing Spark,
+	2616812.962945 ms for reading the file, splitting into syllables and distributing the dataset (sequential),
+	36.928005 ms for building a dictionary of occurrences (distributed),
+	2635.910334 ms for sorting, extracting the centiles and shutting down Spark (sequential).
+
+################################
+Evaluating the performance with respect to a very large file (original dataset repeated 10 times).
+################################
+Profiling the sequential execution on file "La Divina Commedia huge.txt", split into 20 chunks (profiling averaged over 1 runs)...
+Total (averaged) running time: 444760.867978 ms, of which:
+	69.5102 ms for reading the file and splitting into chunks,
+	444567.030155 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk,
+	119.926782 ms for merging the dictionaries into one,
+	4.400841 ms for sorting and extracting the centiles.
+
+Profiling the parallel execution on file "La Divina Commedia huge.txt", split into 20 chunks (profiling averaged over 1 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 563857.025907 ms, of which:
+	67.856691 ms for reading the file and splitting into chunks (sequential),
+	563645.234881 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	139.735479 ms for merging the dictionaries into one (sequential),
+	4.198856 ms for sorting and extracting the centiles (sequential).
+
+Profiling the distributed execution on file "La Divina Commedia huge.txt", split into 20 chunks (profiling CANNOT be averaged). Each chunk is processed by a different node...
+Total (averaged) running time: 568154.035061 ms, of which:
+	85.797804 ms for initializing Spark,
+	80.013968 ms for reading the file and splitting into chunks (sequential),
+	282998.499666 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (distributed),
+	284989.723623 ms for sorting and extracting the centiles and shutting down Spark (sequential).
+
+################################
+Evaluating the performance with respect to the number of threads
+################################
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 2 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 54940.871026 ms, of which:
+	4.301982 ms for reading the file and splitting into chunks (sequential),
+	54915.933734 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	17.613763 ms for merging the dictionaries into one (sequential),
+	3.021547 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 4 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 22831.79352 ms, of which:
+	3.574683 ms for reading the file and splitting into chunks (sequential),
+	22808.352668 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	16.352436 ms for merging the dictionaries into one (sequential),
+	3.513733 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 6 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 15915.620443 ms, of which:
+	5.125367 ms for reading the file and splitting into chunks (sequential),
+	15888.345227 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	19.523845 ms for merging the dictionaries into one (sequential),
+	2.626004 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 8 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 12607.900204 ms, of which:
+	5.249596 ms for reading the file and splitting into chunks (sequential),
+	12578.828396 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	21.184731 ms for merging the dictionaries into one (sequential),
+	2.637481 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 10 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 10671.875358 ms, of which:
+	4.171234 ms for reading the file and splitting into chunks (sequential),
+	10643.379412 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	21.471567 ms for merging the dictionaries into one (sequential),
+	2.853145 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 12 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 9231.25539 ms, of which:
+	4.329725 ms for reading the file and splitting into chunks (sequential),
+	9201.392798 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	22.945965 ms for merging the dictionaries into one (sequential),
+	2.586902 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 14 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 8300.184503 ms, of which:
+	4.705292 ms for reading the file and splitting into chunks (sequential),
+	8267.499037 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	25.213145 ms for merging the dictionaries into one (sequential),
+	2.767029 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 16 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 7638.582977 ms, of which:
+	6.781905 ms for reading the file and splitting into chunks (sequential),
+	7604.538899 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	24.71192 ms for merging the dictionaries into one (sequential),
+	2.550253 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 18 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 7094.168602 ms, of which:
+	5.108984 ms for reading the file and splitting into chunks (sequential),
+	7060.07332 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	26.483577 ms for merging the dictionaries into one (sequential),
+	2.502721 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 20 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 6602.713616 ms, of which:
+	5.275791 ms for reading the file and splitting into chunks (sequential),
+	6567.969655 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	26.885461 ms for merging the dictionaries into one (sequential),
+	2.582709 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 22 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 6268.931763 ms, of which:
+	5.692101 ms for reading the file and splitting into chunks (sequential),
+	6230.6035 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	30.0958 ms for merging the dictionaries into one (sequential),
+	2.540362 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 24 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 5914.494301 ms, of which:
+	6.974187 ms for reading the file and splitting into chunks (sequential),
+	5873.936077 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	31.110032 ms for merging the dictionaries into one (sequential),
+	2.474005 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 26 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 5644.388226 ms, of which:
+	6.216833 ms for reading the file and splitting into chunks (sequential),
+	5602.690412 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	32.9603 ms for merging the dictionaries into one (sequential),
+	2.520681 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 28 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 5507.000168 ms, of which:
+	6.331291 ms for reading the file and splitting into chunks (sequential),
+	5468.09056 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	30.244113 ms for merging the dictionaries into one (sequential),
+	2.334204 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 30 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 5226.893364 ms, of which:
+	8.168746 ms for reading the file and splitting into chunks (sequential),
+	5179.396633 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	36.787768 ms for merging the dictionaries into one (sequential),
+	2.540217 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 32 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 5089.924576 ms, of which:
+	12.629356 ms for reading the file and splitting into chunks (sequential),
+	5040.149936 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	34.79244 ms for merging the dictionaries into one (sequential),
+	2.352844 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 34 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4927.675498 ms, of which:
+	7.366167 ms for reading the file and splitting into chunks (sequential),
+	4878.241447 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	39.621098 ms for merging the dictionaries into one (sequential),
+	2.446786 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 36 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4852.288153 ms, of which:
+	8.664533 ms for reading the file and splitting into chunks (sequential),
+	4807.725408 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	33.274044 ms for merging the dictionaries into one (sequential),
+	2.624168 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 38 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4869.854243 ms, of which:
+	8.452833 ms for reading the file and splitting into chunks (sequential),
+	4824.173812 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	34.577738 ms for merging the dictionaries into one (sequential),
+	2.64986 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 40 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4537.927475 ms, of which:
+	13.120139 ms for reading the file and splitting into chunks (sequential),
+	4487.334991 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	34.88853 ms for merging the dictionaries into one (sequential),
+	2.583815 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 42 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4455.390573 ms, of which:
+	7.79793 ms for reading the file and splitting into chunks (sequential),
+	4409.617646 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	35.586033 ms for merging the dictionaries into one (sequential),
+	2.388964 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 44 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4384.759444 ms, of which:
+	8.503989 ms for reading the file and splitting into chunks (sequential),
+	4337.439663 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	36.218268 ms for merging the dictionaries into one (sequential),
+	2.597524 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 46 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4287.465808 ms, of which:
+	12.534431 ms for reading the file and splitting into chunks (sequential),
+	4226.302242 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	45.935498 ms for merging the dictionaries into one (sequential),
+	2.693637 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 48 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4243.027825 ms, of which:
+	10.41703 ms for reading the file and splitting into chunks (sequential),
+	4186.516717 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	43.543351 ms for merging the dictionaries into one (sequential),
+	2.550727 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 50 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4196.941036 ms, of which:
+	10.289513 ms for reading the file and splitting into chunks (sequential),
+	4141.260865 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	42.989133 ms for merging the dictionaries into one (sequential),
+	2.401525 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 52 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4172.646982 ms, of which:
+	13.030497 ms for reading the file and splitting into chunks (sequential),
+	4112.600823 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	44.605857 ms for merging the dictionaries into one (sequential),
+	2.409805 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 54 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4094.658841 ms, of which:
+	11.469272 ms for reading the file and splitting into chunks (sequential),
+	4042.595027 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	38.249968 ms for merging the dictionaries into one (sequential),
+	2.344574 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 56 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4041.147027 ms, of which:
+	10.970276 ms for reading the file and splitting into chunks (sequential),
+	3981.360192 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	46.486344 ms for merging the dictionaries into one (sequential),
+	2.330215 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 58 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4023.57699 ms, of which:
+	14.537126 ms for reading the file and splitting into chunks (sequential),
+	3960.260094 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	46.387519 ms for merging the dictionaries into one (sequential),
+	2.392251 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 60 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3960.218186 ms, of which:
+	11.953793 ms for reading the file and splitting into chunks (sequential),
+	3905.991917 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	39.390549 ms for merging the dictionaries into one (sequential),
+	2.881927 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 62 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3940.252245 ms, of which:
+	10.990323 ms for reading the file and splitting into chunks (sequential),
+	3877.866912 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	48.848049 ms for merging the dictionaries into one (sequential),
+	2.546961 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 64 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3922.256467 ms, of which:
+	16.184054 ms for reading the file and splitting into chunks (sequential),
+	3855.151548 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	48.368489 ms for merging the dictionaries into one (sequential),
+	2.552376 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 66 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3919.607051 ms, of which:
+	16.138985 ms for reading the file and splitting into chunks (sequential),
+	3860.970956 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	39.972491 ms for merging the dictionaries into one (sequential),
+	2.524619 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 68 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3969.685668 ms, of which:
+	12.459211 ms for reading the file and splitting into chunks (sequential),
+	3903.423599 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	51.432988 ms for merging the dictionaries into one (sequential),
+	2.36987 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 70 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3907.433875 ms, of which:
+	16.977892 ms for reading the file and splitting into chunks (sequential),
+	3844.748141 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	43.200764 ms for merging the dictionaries into one (sequential),
+	2.507078 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 72 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3821.698316 ms, of which:
+	11.637169 ms for reading the file and splitting into chunks (sequential),
+	3765.409928 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	42.302676 ms for merging the dictionaries into one (sequential),
+	2.348543 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 74 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3854.935119 ms, of which:
+	16.789511 ms for reading the file and splitting into chunks (sequential),
+	3793.372 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	41.239143 ms for merging the dictionaries into one (sequential),
+	3.534465 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 76 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3850.899085 ms, of which:
+	16.894952 ms for reading the file and splitting into chunks (sequential),
+	3788.281279 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	43.260095 ms for merging the dictionaries into one (sequential),
+	2.462759 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 78 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3806.534099 ms, of which:
+	16.451421 ms for reading the file and splitting into chunks (sequential),
+	3745.509377 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	42.154851 ms for merging the dictionaries into one (sequential),
+	2.41845 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 80 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3759.296314 ms, of which:
+	16.550369 ms for reading the file and splitting into chunks (sequential),
+	3691.334175 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	48.910081 ms for merging the dictionaries into one (sequential),
+	2.501689 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 82 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3866.088243 ms, of which:
+	12.755437 ms for reading the file and splitting into chunks (sequential),
+	3807.833191 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	43.10244 ms for merging the dictionaries into one (sequential),
+	2.397175 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 84 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4191.776554 ms, of which:
+	18.419609 ms for reading the file and splitting into chunks (sequential),
+	4115.869334 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	55.111775 ms for merging the dictionaries into one (sequential),
+	2.375836 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 86 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4222.76337 ms, of which:
+	14.324621 ms for reading the file and splitting into chunks (sequential),
+	4159.283636 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	46.535616 ms for merging the dictionaries into one (sequential),
+	2.619497 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 88 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3828.56401 ms, of which:
+	18.166425 ms for reading the file and splitting into chunks (sequential),
+	3743.734792 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	63.663653 ms for merging the dictionaries into one (sequential),
+	2.99914 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 90 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 4243.640495 ms, of which:
+	16.932472 ms for reading the file and splitting into chunks (sequential),
+	4162.343108 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	61.322727 ms for merging the dictionaries into one (sequential),
+	3.042188 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 92 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3724.544374 ms, of which:
+	20.742428 ms for reading the file and splitting into chunks (sequential),
+	3639.811446 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	61.410242 ms for merging the dictionaries into one (sequential),
+	2.580258 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 94 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3798.348504 ms, of which:
+	17.402204 ms for reading the file and splitting into chunks (sequential),
+	3723.783764 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	54.82118 ms for merging the dictionaries into one (sequential),
+	2.341356 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 96 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3711.731463 ms, of which:
+	20.25356 ms for reading the file and splitting into chunks (sequential),
+	3636.700061 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	52.071622 ms for merging the dictionaries into one (sequential),
+	2.70622 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 98 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3538.531653 ms, of which:
+	22.86794 ms for reading the file and splitting into chunks (sequential),
+	3455.114716 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	58.020872 ms for merging the dictionaries into one (sequential),
+	2.528125 ms for sorting and extracting the centiles (sequential).
+
+Profiling the parallel execution on file "La Divina Commedia.txt", split into 100 chunks (profiling averaged over 5 runs). Each chunk is processed by a different thread...
+Total (averaged) running time: 3580.53361 ms, of which:
+	21.63503 ms for reading the file and splitting into chunks (sequential),
+	3509.31505 ms for splitting each word into syllables and building a dictionary of occurrences for each chunk (parallel),
+	46.939224 ms for merging the dictionaries into one (sequential),
+	2.644306 ms for sorting and extracting the centiles (sequential).
+

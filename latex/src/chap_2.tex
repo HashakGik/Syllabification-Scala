@@ -1,0 +1,269 @@
+\chapter{Software design}
+
+\section{Word splitting procedure}
+Syllabification is a sequential process which can be applied either to an entire text or to each word separately.
+In order to exploit a distributed architecture, however, it's wise to apply the algorithm to single words (which can be distributed to different nodes, regardless of their actual position inside the text).
+
+While prosaic text has a clear boundary between words (ie. a whitespace character), with the only exception of elisions (eg. ``l'amico'', which is considered a single word), poetic works tend to mimic the spoken tendency of joining consecutive words, by means of extensive use of \emph{synalepha} (which will alter the ``natural'' syllabification as well).
+
+This requirement imposes to split the input into words when a whitespace (optionally with some punctuation marks, against which the procedure should be robust) is encountered, except in the following cases:
+\begin{itemize}
+	\item An apostrophe is encountered (either before, after or with no whitespace at all),
+	\item The whitespace separates two vowels (except when a newline separates two verses).
+\end{itemize}
+
+In order to improve modularity, two splitting classes are implemented: the first one (actually a singleton object) splits the input into big \emph{chunks} (or \texttt{Pages}) of text (useful when the input is so big that even the word splitting procedure needs to be distributed); while the latter splits a single \texttt{Page} into words.
+
+To improve code reuse, the shared splitting behavior is implemented in a \texttt{Splitter} trait which exposes a single \texttt{split(area: String): Queue[Int]} method taking an area of text and returning all the indexes in which a word split can be performed.
+Internally it applies a tail-recursive split on whitespaces, checking whether the split found is acceptable or not according to the aforementioned criteria.
+
+The \texttt{ChunkSplitter} object exposes two methods (\texttt{loadString(text: String, chunks: Int, lookahead: Int): Queue[Page]} and\\ \texttt{loadFile(file: String, chunks: Int, lookahead: Int):\\ Queue[Page]}) which load a text (from a string or a file respectively), applying a preliminary split into \texttt{Page} instances. An obvious race condition on the  input forces this initial split to be sequential, however, abstracting from loading overhead and assuming $\mathcal{O}(1)$ substring extraction by index, splits are performed (in a tail-recursive fashion) in $\mathcal{O}(\texttt{chunks} \cdot \texttt{lookahead})$ time, because the \texttt{ChunkSplitter} invokes the \texttt{split()} method only in substrings starting at $\texttt{i} \cdot \texttt{text.length()} / \texttt{chunks}$ and of length $\texttt{lookahead}$, for \texttt{i} in $0 .. \texttt{chunks} - 1$.
+
+The \texttt{Page} case class models a single chunk of text. It's a string enriched with housekeeping informations required for later reconstruction of the original text, namely it's \texttt{id} and \texttt{start}/\texttt{end} indexes inside the original text, however in the current implementation these informations are not used, due to the word ordering being implicitly preserved during computations.
+
+The \texttt{WordSplitter(val page: Page)} class' \texttt{getWords(): Queue[Word]} method splits words tail-recursively, producing an immutable queue of \texttt{Word}s.
+
+\section{Syllable splitting rules}
+Once words have been correctly split, their syllables can be computed independently on each of them, abstracting from their position inside the original text (as long as synalepha are considered a single word).
+This property allows to encapsulate the syllable splitting inside the \texttt{Word} case class and to distribute its computation easily.
+
+The \texttt{Word} case class exposes the methods \texttt{toSyllabifiedString(): String} and \texttt{toQueueOfSyllables(): Queue[Syllable]}, the former returns a string containing the word itself with syllables delimited by an $\#$ character, while the latter creates a \texttt{Syllable} instance for each syllable and stores them in a queue.
+
+Each of them invokes private methods which split syllables in two phases:
+\begin{enumerate}
+	\item \texttt{performInitialSplits(str: String): String} (partially) splits syllables at easily identifiable boundaries:
+	\begin{itemize}
+		\item double consonants,
+		\item multiple consonants,
+		\item dieresis,
+		\item hiatuses;
+	\end{itemize}
+	\item \texttt{performFinalSplits(str: String): String} splits syllables at harder to detect boundaries:
+	\begin{itemize}
+		\item contoid vocoid - contoid vocoid,
+		\item vocoid - contoid vocoid,
+		\item vocoid - vocoid.
+	\end{itemize}
+\end{enumerate}
+
+As already discussed, ambiguities arise when two consecutive vowels meet, to solve this problem, heuristics need to be chosen:
+\begin{itemize}
+	\item \texttt{splitHiatus(str: String): String} splits only sure hiatuses (ie. those which can never be mistaken for diphthongs and those with a marked accent),
+	\item \texttt{performFinalSplits(str: String): String} (in the vocoid - vocoid split) and the auxiliary method \texttt{clumpDiphthongs(str: String): String} consider two consecutive vowels diphthongs as often as possible (ie. when a sure triphthong cannot be detected), since hiatuses are already split when the method is invoked and the combination vowel + diphthong is statistically more common than a triphthong.
+\end{itemize}
+
+Since syllabification rules impose, not only splitting requirements (eg. between double consonants), but also clumping requirements, the special characters §, \{ and \} are internally used (and then removed) to mark positions in which a split is forbidden, therefore these characters (along with $\#$) should not appear in the input text.
+
+
+\section{Frequency analysis}
+In order to unify every possible variant of a \texttt{Syllable} (eg. uppercase, lowercase, with apostrophes, with diacritics, inside synalepha, etc.), a\\ \texttt{CharacterSequence} trait (which is mixed-in \texttt{Page} and \texttt{Word} classes as well) is injected in the \texttt{Syllable} case class.
+
+\texttt{CharacterSequence}'s \texttt{toPrettyString(): String} method converts the \texttt{str} attribute of the injected class to a lowercase version, without spaces, punctuation marks and diacritics (accents and dieresis) on vowels.
+The \texttt{toString(): String} method overrides the default behavior returning the \texttt{str} attribute for convenience.
+
+\subsection{Syllable count}
+The most natural way of counting elements of a collection of elements of type \texttt{K} is to use any collection implementing the \texttt{Map[K, Int]} trait, indexed with the distinct elements of the collection.
+This approach works reasonably fast (since it can be performed in $\mathcal{O}(n)$) as long as indexing can be performed in $\mathcal{O}(1)$ (which is the case for \texttt{HashMap}, the default implementation of \texttt{Map}).
+
+\texttt{Map}s typically impose constraints on the key type, in the case of \texttt{HashMap} it must be hashable, ie. each element should be uniquely identified (and its identifier must never change during the collection's lifetime). Since \texttt{String} is an immutable type, a prettified \texttt{CharacterSequence} satisfies both the language specifications and the ``semantic'' requirement of aggregating different versions of the same syllable (eg. ``l'a'' and ``la'' are prettified in the same way and therefore counted together).
+
+\subsection{Order statistics}
+While selection algorithms (eg. Quickselect, Heapselect, etc.) have an average complexity of $\mathcal{O}(n)$, the need of extracting more than one selection statistic neglects their advantage over the ``naive'' sort ($\mathcal{O}(n log(n))$) followed by indexing ($\mathcal{O}(1)$), the latter strategy is therefore preferred.
+
+
+\section{Integration and distributed architecture}
+Although the syllabified output is intrinsically sequential and the map of syllable occurrences is a shared resource in which multiple agents need to synchronize, the implementation will benefit from parallel or distributed execution. To prove this claim, the same algorithm is implemented in multiple architectures and their performance will be profiled to determine which scales better with respect to input size.
+
+In general the workflow is to split the input into \texttt{Page}s, each page into \texttt{Word}s and each word into \texttt{Syllable}s. In order to preserve the ordering, the most natural choice for collections is the \texttt{Queue}, using its \emph{immutable} variant allows to distribute its content in a straight forward manner, since it can be handled in a purely functional fashion.
+
+\begin{lstlisting}[mathescape=true,language=scala, caption={Syllable extraction pseudocode}]
+val pages: Queue[Page] = ChunkSplitter.loadFile(in, chunks, lookahead)
+val wordSplitters: Queue[WordSplitter] = pages.map(p => new WordSplitter(p))
+val words: Queue[Word] = wordSplitters.flatMap(ws => w.getWords())
+val syllables: Queue[Syllable] = words.flatMap(w => w.toQueueOfSyllables())
+\end{lstlisting}
+
+Once the queue of syllables is obtained, two substantially different operations need to be performed:
+\begin{itemize}
+	\item Output the queue as a string,
+	\item Count the occurrences of each syllable.
+\end{itemize}
+
+While the first operation requires to preserve positional information on each syllable (implicitly encoded by a syllable's position inside the queue), the latter can be efficiently computed only after aggregation, it's therefore more reasonable to compute them in the aforementioned order, instead of recomputing positions which will be inevitably lost during aggregation.
+
+The first output can be simply computed exploiting the method\\ \texttt{Seq.mkstring(str: String)} on the queue of syllables, or using directly the method \texttt{Word.toSyllabifiedString()} mapping each word into a string and then joining them.
+
+The second output involves unification of different variants of the same syllable and the creation of the occurrence map.
+The last step can be performed by creating an intermediate queue of \texttt{Tuple2[String, Int]}, which associates each syllable to a single occurrence, and then aggregating all the tuples with the same key by summing their values.
+
+\begin{lstlisting}[mathescape=true,language=scala, caption={Syllable counting pseudocode}]
+val prettySyllables: Queue[String] = syllables.map(s => s.toPrettyString)
+val tuples: Queue[(String, Int)] = prettySyllables.map (ps => (ps, 1))
+val count: Map[String, Int] = tuples.reduceByKey((a, b) => a + b)
+\end{lstlisting}
+
+While this implementation looks straightforward, the method \texttt{reduceByKey} is not a native Scala method (it's implemented by Spark's framework) and a less abstract implementation needs to be performed: a queue of queues is computed by grouping each tuple by their key (the first element) and then each subqueue is mapped into a new tuple \texttt{(key, sum of values)}.
+
+\begin{lstlisting}[mathescape=true,language=scala, caption={reduceByKey pseudocode}]
+val queueOfQueues = tuples.groupBy(t => t._1)
+val count: Map[String, Int] = queueOfQueues.mapValues(el => el.map(t => t._2).sum)
+\end{lstlisting}
+
+In case of multiple pages, a partial occurrence count for each of them can be obtained. In order to merge them, a reduction is performed by summing, for each key in the concatenated map (which overwrites duplicate keys with the value from the second map), the corresponding value with either the value of the first map (if the key was duplicated) or zero.
+
+\begin{lstlisting}[mathescape=true,language=scala, caption={Map merging pseudocode}]
+val count: Map[String, Int] = queueOfCounts.reduce(
+	(m1, m2) => m1 ++ m2.map {
+		case (k, v) => k -> (v + m1.getOrElse(k, 0))
+	}
+)
+\end{lstlisting}
+
+The occurrence count map is finally sorted and centiles are extracted as output.
+
+\subsection{Sequential architecture}
+\begin{figure}[H]
+	\center
+	\begin{tikzpicture}[->, auto, node distance=1cm and 2.5cm, on grid, semithick, state/.style={draw, black, minimum width=2cm}]
+	\node[state] (A) []{Input};
+	\node[state] (B) [right= of A]{Pages};
+	\node[state] (C) [right= of B]{Words};
+	\node[state] (D) [right= of C]{Syllables};
+	\node[state, fill=lightgray] (E) [below=of D]{Output};
+	\node[state] (F) [right=of D]{Occurrences};
+	\node[state, fill=lightgray] (G) [below= of F]{Stats};
+	
+	\path (A) edge[] node[]{} (B);
+	\path (B) edge[] node[]{} (C);
+	\path (C) edge[] node[]{} (D);
+	\path (D) edge[] node[]{} (E);
+	\path (D) edge[] node[]{} (F);
+	\path (F) edge[] node[]{} (G);
+	
+	\end{tikzpicture}
+	\caption{Sequential dataflow}
+	\label{fig:seq}
+\end{figure}
+
+In this straightforward architecture, a single computational unit is used to proceed from input to outputs.
+Even though the input can be split into multiple pages (and therefore partial occurrence maps can be computed for each of them), processing is performed in order.
+
+\subsection{Parallel architecture}
+\begin{figure}[H]
+	\center
+	\begin{tikzpicture}[->, auto, node distance=1cm and 2.7cm, on grid, semithick, state/.style={draw, black, minimum width=2cm}, thread/.style={black, minimum width=2.2cm}]
+	\node[state] (A) []{Input};
+	\node[state] (B) [right= of A]{Pages};
+	\node[thread] (T) [right= of B] {Threads};
+	\node[state] (C) [below= of T]{Words};
+	\node[state] (D) [below= of C]{Syllables};
+	\node[state, fill=lightgray] (E) [below=of D]{Output};
+	\node[state] (F) [right=of T]{Occurrences};
+	\node[state, fill=lightgray] (G) [below=of F]{Stats};
+
+	\draw [dashed](T.north west) rectangle +(2.2cm, -2.7cm);
+		
+	\path (A) edge[] node[]{} (B);
+	\path (C) edge[] node[]{} (D);
+	\path (T) edge[] node[]{} (F);
+	\path (F) edge[] node[]{} (G);
+	
+	\draw ([yshift=0.15cm]B.east) -> ([yshift=0.15cm]T.west);
+	\draw ([yshift=0.05cm]B.east) -> ([yshift=0.05cm]T.west);
+	\draw ([yshift=-0.05cm]B.east) -> ([yshift=-0.05cm]T.west);
+	\draw ([yshift=-0.15cm]B.east) -> ([yshift=-0.15cm]T.west);
+	
+	\draw ([yshift=-2.2cm]T.south) -> ([]E.north);
+	
+	\end{tikzpicture}
+	\caption{Parallel dataflow}
+	\label{fig:par}
+\end{figure}
+
+Since syllabification is an instance of an \emph{embarassingly parallel}~\cite{embarassing} task, a parallel architecture can be devised, with no need for synchronization mechanisms, other than a \emph{barrier} at the end of each computation.
+
+In this architecture, a worker \emph{thread} is started for each page. When syllabification is completed for the associated page, each thread stores internally the final results (the syllabified string and a partial occurrence count).
+When every thread has finished, the partial results are merged together sequentially (a simple append in the case of the syllabified output, a reduction for the partial occurrence maps).
+
+\subsection{First distributed architecture}
+\begin{figure}[H]
+	\center
+	\begin{tikzpicture}[->, auto, node distance=1cm and 2.5cm, on grid, semithick, state/.style={draw, black, minimum width=2cm}]
+	\node[state] (A) []{Input};
+	\node[state] (B) [right= of A]{Pages};
+	\node[state] (C) [right= of B]{Words};
+	\node[state] (D) [right= of C]{Syllables};
+	\node[state, fill=lightgray] (E) [below=of D]{Output};
+	\node[state] (F) [right=of D]{Occurrences};
+	\node[state, fill=lightgray] (G) [below= of F]{Stats};
+	
+	\path (A) edge[] node[]{} (B);
+	\path (F) edge[] node[]{} (G);
+	
+	\draw ([yshift=0.15cm]B.east) -> ([yshift=0.15cm]C.west);
+	\draw ([yshift=0.05cm]B.east) -> ([yshift=0.05cm]C.west);
+	\draw ([yshift=-0.05cm]B.east) -> ([yshift=-0.05cm]C.west);
+	\draw ([yshift=-0.15cm]B.east) -> ([yshift=-0.15cm]C.west);
+	
+	\draw ([yshift=0.15cm]C.east) -> ([yshift=0.15cm]D.west);
+	\draw ([yshift=0.05cm]C.east) -> ([yshift=0.05cm]D.west);
+	\draw ([yshift=-0.05cm]C.east) -> ([yshift=-0.05cm]D.west);
+	\draw ([yshift=-0.15cm]C.east) -> ([yshift=-0.15cm]D.west);
+	
+	\draw ([yshift=0.15cm]D.east) -> ([yshift=0.15cm]F.west);
+	\draw ([yshift=0.05cm]D.east) -> ([yshift=0.05cm]F.west);
+	\draw ([yshift=-0.05cm]D.east) -> ([yshift=-0.05cm]F.west);
+	\draw ([yshift=-0.15cm]D.east) -> ([yshift=-0.15cm]F.west);
+	
+	\draw ([]D.south) -> ([]E.north);
+	
+	\end{tikzpicture}
+	\caption{Distributed dataflow with maximum parallelism}
+	\label{fig:spark1}
+\end{figure}
+
+Since every collection involved in the program is immutable, they can be parallelized into Spark's resilient distributed datasets and the output can be computed in a distributed fashion.
+
+Data distribution can be implemented in two possible ways, by maximizing parallelism or by minimizing inter-node communication.
+The former approach is discussed in this section, while the latter in the following.
+
+Since the disk is a shared resource, pages still need to be split sequentially, however as soon as a \texttt{WordSplitter} can be created for each of them, the collection can be distributed.
+
+RDD transformations create two new RDDs (of words first and then of syllables), then the syllabified output is collected and the same RDD of syllables is further transformed into an RDD of occurrences (which is sorted by the distributed framework prior to collection).
+
+While this approach tends to maximize the amount of data which is processed simultaneously, the first two transformations \textbf{increase} the number of elements (contrary to the usual approach of trying to reduce an RDD size at each step, to minimize communication, which is the bottleneck of this architecture), making this architecture potentially slow in some circumstances.
+
+\subsection{Second distributed architecture}
+\begin{figure}[H]
+	\center
+	\begin{tikzpicture}[->, auto, node distance=1cm and 2.5cm, on grid, semithick, state/.style={draw, black, minimum width=2cm}]
+	\node[state] (A) []{Input};
+	\node[state] (B) [right= of A]{Pages};
+	\node[state] (C) [right= of B]{Words};
+	\node[state] (D) [right= of C]{Syllables};
+	\node[state, fill=lightgray] (E) [below=of D]{Output};
+	\node[state] (F) [right=of D]{Occurrences};
+	\node[state, fill=lightgray] (G) [below= of F]{Stats};
+	
+	\path (A) edge[] node[]{} (B);
+	\path (B) edge[] node[]{} (C);
+	\path (C) edge[] node[]{} (D);
+	\path (F) edge[] node[]{} (G);
+	
+	\draw ([yshift=0.15cm]D.east) -> ([yshift=0.15cm]F.west);
+	\draw ([yshift=0.05cm]D.east) -> ([yshift=0.05cm]F.west);
+	\draw ([yshift=-0.05cm]D.east) -> ([yshift=-0.05cm]F.west);
+	\draw ([yshift=-0.15cm]D.east) -> ([yshift=-0.15cm]F.west);
+	
+	\draw ([]D.south) -> ([]E.north);
+	
+	\end{tikzpicture}
+	\caption{Distributed dataflow with minimum parallelism}
+	\label{fig:spark2}
+\end{figure}
+
+By postponing parallelization as much as possible, it's possible to minimize communication, at the expenses of a lower degree of parallelism.
+
+This architecture produces a queue of syllables sequentially and then parallelizes it into an RDD in order to perform only the last transformation into an RDD of occurrences.
+
+This seemingly naive implementation is in fact better than the previous one, in case the trade off between network communication and sequential syllabification is heavily shifted in favor of the latter.

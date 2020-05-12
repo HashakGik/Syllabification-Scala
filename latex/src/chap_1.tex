@@ -1,0 +1,99 @@
+\chapter{Problem analysis}
+
+\section{Problem specification}
+This project consists of a Scala tool capable of taking arbitrarily long Italian (with a particular focus on poetry) texts encoded in UTF-8 and returning a \emph{syllabified} version of them, in which all the syllable boundaries are marked with a $\#$ sign, while preserving other punctuation marks and being robust with respect to elisions~\cite{elision} (marked in Italian by the ' apostrophe) and metric dieresis~\cite{diaeresis} (marked in poetic Italian by an umlaut over vowels).
+Since the algorithm processes \emph{written} Italian text, while syllabification is a \emph{phonological} phenomenon, the output's accuracy won't reach $100\%$, however synalepha~\cite{synalepha} phenomena will be detected as well.
+
+Together with the syllabification of input texts, this project outputs some metrics measured on them:
+\begin{itemize}
+	\item Absolute count for each syllable (in a dictionary),
+	\item Most frequent syllable,
+	\item Median syllable,
+	\item Least frequent syllable.
+\end{itemize}
+
+\section{Italian rules for syllabification}
+A syllable is a group of phonemes which are emitted as a single sound. Any human language splits words into syllables in a process known as \emph{syllabification}, this process imposes constraints on the combinations of phonemes allowed in a given language.
+
+As a universal principle, a syllable must contain at least a \emph{vocoid} and, optionally, antevocalic and/or postvocalic \emph{contoids}~\cite{demauro}. A single syllable is phonologically a variation of intensity in the sound emitted by the larynx, with \emph{peaks} corresponding to vocoids and \emph{troughs} corresponding to contoids, syllabification can therefore be analyzed phonetically by isolating each trough-to-trough segment of the voice intensity~\cite{maturileoni}.
+Albeit simple and universal, this approach cannot be applied directly to written text, since the mapping between phonemes (sound units) and graphemes (text symbols) is not bijective, however in Italian vocoids always correspond to vowels (and therefore the first, and most important syllabification rule, can already be derived: a syllable must always contain at least a vowel) and the mapping presents very few exceptions.
+
+For syllabification of a specific language, it's useful to use less general rules. Luckily, for the Italian language, these rules are well defined and only few cases of ambiguity arise when applied without phonetic informations (namely the position of the tonic accent inside words), moreover, heuristics exist for reducing these ambiguities further.
+
+Before describing the syllabification rules for Italian, it's important to clarify some terms which will be used:
+\begin{labeling}{Semiconsonant}
+	\item [Digram] Sequence of two letters corresponding to a single sound, namely:
+	\begin{itemize}
+		\item gl + i, gn + vowel,
+		\item sc + e/i,
+		\item ch + e/i, gh + e/i,
+		\item ci + a/o/u, gi + a/o/u (except when the i is accented, as in farmacìa).
+	\end{itemize}
+	\item [Trigram] Sequence of three letters corresponding to a single sound, namely:
+	\begin{itemize}
+		\item gli + a/o/u,
+		\item sci + a/o/u.
+	\end{itemize}
+	\item [Semiconsonant] Vowel which is pronounced as if it was a consonant, can be only i/u in one of the following cases:
+	\begin{itemize}
+		\item i/u + accented vowel (eg. ièri, uòva, etc.),
+		\item accented vowel + i/u,
+		\item diphthongs,
+		\item triphthongs.
+	\end{itemize}
+	\item [Diphthong] Sequence of two vowels pronounced with a single sound, namely:
+	\begin{itemize}
+		\item i + a/e/o/u,
+		\item u + a/e/i/o,
+		\item a/e/o/u + i,
+		\item a/e + u.
+	\end{itemize}
+	\item [Triphthong] Sequence of three vowels pronounced with a single sound, namely:
+	\begin{itemize}
+		\item iài, ièi,
+		\item uài, uòi, (eg. guài),
+		\item iuò (eg. aiuòla).
+	\end{itemize}
+	\item [Hiatus] Sequence of two/three vowels pronounced separately, namely:
+	\begin{itemize}
+		\item a + e/o (eg. maestro),
+		\item e + a/o,
+		\item o + a/e,
+		\item ì/ù + vowel(s) (eg. farmacìa, which is also an exception to the digram definition),
+		\item ri/bi/tri + vowel (eg. biella),
+		\item metric dieresis.
+	\end{itemize}
+	\item [Dieresis] In poetry, is a variation of pronunciation (for metric purposes) which splits letters which are usually pronounced together into multiple sounds, ie. a diphthong becomes a hiatus, as in ``così vid’ ïo la gloriosa rota'', where the syllable splitting is ``co-sì-vi-d’ï-o-la-glo-rio-sa-ro-ta'', instead of the prosaic split ``co-sì-vi-d’io-la-glo-rio-sa-ro-ta''.
+	\item [Synalepha] In poetry, when a word ends with a vowel and the next one begins with another vowel, the two words are (often) merged into one and the boundary belongs to the same syllable (even if the joined vowels would normally form a hiatus, eg. ``Lì cominciò con forza e con menzogna'' is split as ``Lì-co-min-ciò-con-for-z\textbf{ae}-con-men-zo-gna'', even though a-e should be split, as in m\textbf{a-e}-stro).
+\end{labeling}
+
+From the above terminology, two sources of ambiguity \emph{arising when the accent is not marked} can be already be identified:
+\begin{itemize}
+	\item ci/gi + vowel can be either a digram (and so will be pronounced with the same sound as the vowel) or one of the possible hiatus cases (i + vowel, pronounced as two separate sounds),
+	\item i/u + vowel can be either a diphthong or a hiatus.
+\end{itemize}
+Heuristics able to solve these ambiguities with an high precision exist, even when the accent is not explicitly marked~\cite{iato}, however since hiatuses are statistically rare in current Italian (pronunciation of languages tends towards simplification over time, and diphthongs are easier to pronounce than hiatuses), in case of ambiguity, the proposed algorithm will default to considering two consecutive vowels a diphthong.
+
+Another ambiguity, which cannot be solved without semantic context (not even by humans), arises on deciding whether to apply a synalepha or not (this is at complete discretion of the poet and the same words, appearing in different verses can be tied by a synalepha in one and split in the other).
+Since they are statistically frequent, the proposed algorithm will mark all the vocalic boundaries as possible synalepha.
+
+The following rules are derived from~\cite{serianni,sensini}:
+\begin{itemize}
+	\item At the beginning of a word, a vowel or a diphthong form a syllable on their own (eg. \textbf{a}-mi-co, \textbf{au}-gu-ri, \textbf{e}-lo-qu-io),
+	\item Diphthongs/triphthongs always belong to the same syllable (eg. a-\textbf{iuo}-la, u-ra-n\textbf{io}, ci-l\textbf{ie}-gia),
+	\item Hiatuses (including dieresis, but excluding those appearing inside synalepha) are always split (eg. m\textbf{a-e}-stro, in-no-c\textbf{u-o}, in-vi-d\textbf{ï-o}-si, qu-\textbf{ï-e}-tar-mi),
+	\item Digrams/trigrams are always together with the following vowel (eg. \textbf{ci}-lie-\textbf{gia}, \textbf{gno}-mo),
+	\item A single consonant cannot be on it's own syllable (eg. \textbf{pa-lo}, a-\textbf{mi-co}),
+	\item Double consonants (including cq) are always split (eg. a\textbf{c-q}ua, so\textbf{q-q}ua-dro, ri-du\textbf{r-r}e),
+	\item Impure s (s + consonant) are always together with the following vowel (eg. \textbf{sce}l-le-ra-to, \textbf{sco}-\textbf{sta}r-si, \textbf{stra}p-pa-re),
+	\item Other consecutive consonants are always split (eg. ac-cre-sci-me\textbf{n-t}o, a\textbf{n-t}ro-po-lo-gi-co), except when a mute consonant (b, c, d, g, p, t) is followed by a liquid one (l, r) (eg. pi-ro-\textbf{cla}-\textbf{sto}, ac-\textbf{cli}-ma-ta-to, an-\textbf{tro}-po-lo-gi-co, ac-\textbf{cre}-sci-men-to, s\textbf{tr}ap-pa-re), but not viceversa (cfr. a\textbf{r-t}o and an-\textbf{tr}o).
+\end{itemize}
+
+\section{Related work}
+Nowadays any word processor or text preparation system ships with a syllabification engine, mainly used for correctly splitting a word near the page margin.
+
+While syllabification principles are universal among human languages, the mapping between phonemes and graphemes is unique to each language and therefore different approaches need to be applied for each language.
+
+The most used approach is based on lookup tables: each language has its own dictionary (which stores for each word its syllabification) and a newline is inserted at the closest splitting point. Although universal (and applicable to languages, like English, which don't have strict rules for mapping phonemes into graphemes), this approach tends not to scale well.
+Rule-based approaches, like the one proposed in this project, are implemented in more sophisticated text preparation systems, like \LaTeX's \texttt{babel} package, and some computational linguistics pubblications~\cite{cioni,adsett}.
+In text preparation systems the diphthong-hiatus ambiguity does not arise, thanks to the tendence of avoiding an end-of-line split between two vowels (no matter whether they form a diphthong or hiatus) in Italian, so a rule-based approach can be extremely compact and effective.

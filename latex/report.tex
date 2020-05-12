@@ -1,0 +1,62 @@
+%\documentclass[a4paper,twoside,11pt]{report}
+\documentclass[a4paper,singleside,11pt]{report}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\usepackage[hidelinks]{hyperref}
+
+\usepackage{tikz,
+		    verbatim,
+		    pgfplotstable,
+		    float,
+		    scrextend,
+		    url,
+		    rotating}
+	    
+\usetikzlibrary{positioning}
+
+\usepackage[backend=bibtex,style=trad-plain, sorting=nty,firstinits=true]{biblatex}
+\addbibresource{bibliography.bib}
+
+\usepackage[formats]{listings}
+
+\lstset{
+	numbers = left,
+	framexleftmargin=10mm,
+	frame=none,
+	backgroundcolor=\color[RGB]{245,245,245},
+	showstringspaces=false,
+	tabsize=2,
+	breaklines=true
+}
+
+\begin{document}
+	\title{A syllabification tool for very long poems in Italian\\
+	\large Scala project for the Languages and Algorithms for Artificial Intelligence course}
+	\author{Luca Salvatore Lorello\thanks{The author wishes to thank Mrs. Simona Scacchi, dutiful Italian teacher and friend, for her invaluable help.} (ID. 919584)}
+	\date{Exam session: Summer 2020}
+	\maketitle
+	\tableofcontents
+	
+	\begin{abstract}
+		This work aims to produce, given an Italian text, a syllabified version (with syllables separed by $\#$) of it, a dictionary of encountered syllables mapping each of them to their count, and order statistics on them (most frequent, least frequent and centiles).
+		Peculiar aspects of the Italian language, in general, and of poetic style, in particular, are exploited to solve, up to a very satisfactory accuracy, the diphthong/hiatus ambiguity (which plays an important role in the syllabification process), and the algorithm is developed in order to be robust with respect to punctuation marks and capitalization.
+		
+		Albeit, clearly language dependent, the software architecture aims to be easily adaptable to one's needs, while remaining scalable. For this purpose, the syllable-splitting algorithm is implemented in a functional-programming style and different software architectures are explored.
+		Furthermore some unit tests are implemented and the entire tool's scalability is benchmarked against long texts based on Dante's \emph{Commedia}.
+	\end{abstract}
+	
+	\include{src/chap_1}
+	\include{src/chap_2}
+	\include{src/chap_3}
+
+	
+	\appendix
+	
+	\lstlistoflistings
+	
+	\printbibliography % biblatex
+\end{document}

@@ -1,0 +1,248 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>root - Syllabification documentation - _root_</title>
+          <meta name="description" content="root - Syllabification documentation - root " />
+          <meta name="keywords" content="root Syllabification documentation root " />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="lib/template.js"></script>
+      <script type="text/javascript" src="lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = 'index.html';
+            var hash = 'package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="lib/package_big.png" />
+        
+        <h1>root package</h1><span class="permalink">
+      <a href="index.html#package" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">root</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="_root_.ParallelRun" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ParallelRunextendsProfilerwithProductwithSerializable"></a>
+      <a id="ParallelRun:ParallelRun"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ParallelRun.html"><span class="name">ParallelRun</span></a><span class="params">(<span name="in">in: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="out">out: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="stats">stats: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="profileLog">profileLog: <span class="extype" name="java.io.PrintWriter">PrintWriter</span></span>, <span name="chunks">chunks: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">10</span></span>, <span name="lookahead">lookahead: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">50</span></span>, <span name="profiling">profiling: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>, <span name="times">times: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="Profiler.html" class="extype" name="Profiler">Profiler</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@ParallelRunextendsProfilerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Case class for the parallel run.</p><div class="fullcomment"><div class="comment cmt"><p>Case class for the parallel run. The input is split into chunks, each of them is processed by a different thread and the result is finally merged.
+Execution is split into four phases in order to profile each operation separately.</p></div><dl class="paramcmts block"><dt class="param">in</dt><dd class="cmt"><p>Input filename.</p></dd><dt class="param">out</dt><dd class="cmt"><p>Output filename for the syllabified text.</p></dd><dt class="param">stats</dt><dd class="cmt"><p>Output filename for the statistics on syllable occurrences.</p></dd><dt class="param">profileLog</dt><dd class="cmt"><p>File handler for the profiling log.</p></dd><dt class="param">chunks</dt><dd class="cmt"><p>Number of chunks in which the input will be split.</p></dd><dt class="param">lookahead</dt><dd class="cmt"><p>Number of lookahead characters to search for each splitting point.</p></dd><dt class="param">profiling</dt><dd class="cmt"><p>If true profiles the execution and saves the result on profileLog.</p></dd><dt class="param">times</dt><dd class="cmt"><p>Number of times the execution will be repeated to improve profiling precision.</p></dd></dl></div>
+    </li><li name="_root_.Profiler" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ProfilerextendsAnyRef"></a>
+      <a id="Profiler:Profiler"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Profiler.html"><span class="name">Profiler</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@ProfilerextendsAnyRef" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Trait implementing a simple profiler.</p>
+    </li><li name="_root_.SequentialRun" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SequentialRunextendsProfilerwithProductwithSerializable"></a>
+      <a id="SequentialRun:SequentialRun"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SequentialRun.html"><span class="name">SequentialRun</span></a><span class="params">(<span name="in">in: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="out">out: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="stats">stats: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="profileLog">profileLog: <span class="extype" name="java.io.PrintWriter">PrintWriter</span></span>, <span name="chunks">chunks: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">10</span></span>, <span name="lookahead">lookahead: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">50</span></span>, <span name="profiling">profiling: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>, <span name="times">times: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="Profiler.html" class="extype" name="Profiler">Profiler</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@SequentialRunextendsProfilerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Case class for the sequential run.</p><div class="fullcomment"><div class="comment cmt"><p>Case class for the sequential run. The input is split into chunks and each of them is processed in a for loop.
+Execution is split into four phases in order to profile each operation separately.</p></div><dl class="paramcmts block"><dt class="param">in</dt><dd class="cmt"><p>Input filename.</p></dd><dt class="param">out</dt><dd class="cmt"><p>Output filename for the syllabified text.</p></dd><dt class="param">stats</dt><dd class="cmt"><p>Output filename for the statistics on syllable occurrences.</p></dd><dt class="param">profileLog</dt><dd class="cmt"><p>File handler for the profiling log.</p></dd><dt class="param">chunks</dt><dd class="cmt"><p>Number of chunks in which the input will be split.</p></dd><dt class="param">lookahead</dt><dd class="cmt"><p>Number of lookahead characters to search for each splitting point.</p></dd><dt class="param">profiling</dt><dd class="cmt"><p>If true profiles the execution and saves the result on profileLog.</p></dd><dt class="param">times</dt><dd class="cmt"><p>Number of times the execution will be repeated to improve profiling precision.</p></dd></dl></div>
+    </li><li name="_root_.SparkRun1" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SparkRun1extendsProfilerwithProductwithSerializable"></a>
+      <a id="SparkRun1:SparkRun1"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SparkRun1.html"><span class="name">SparkRun1</span></a><span class="params">(<span name="in">in: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="out">out: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="stats">stats: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="profileLog">profileLog: <span class="extype" name="java.io.PrintWriter">PrintWriter</span></span>, <span name="chunks">chunks: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">10</span></span>, <span name="lookahead">lookahead: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">50</span></span>, <span name="profiling">profiling: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <a href="Profiler.html" class="extype" name="Profiler">Profiler</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@SparkRun1extendsProfilerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Case class for one of the distributed runs.</p><div class="fullcomment"><div class="comment cmt"><p>Case class for one of the distributed runs. The input is split into chunks, each of them is processed by a different node and the result is finally merged.
+Execution is split into four phases in order to profile each operation separately.</p></div><dl class="paramcmts block"><dt class="param">in</dt><dd class="cmt"><p>Input filename.</p></dd><dt class="param">out</dt><dd class="cmt"><p>Output filename for the syllabified text.</p></dd><dt class="param">stats</dt><dd class="cmt"><p>Output filename for the statistics on syllable occurrences.</p></dd><dt class="param">profileLog</dt><dd class="cmt"><p>File handler for the profiling log.</p></dd><dt class="param">chunks</dt><dd class="cmt"><p>Number of chunks in which the input will be split.</p></dd><dt class="param">lookahead</dt><dd class="cmt"><p>Number of lookahead characters to search for each splitting point.</p></dd><dt class="param">profiling</dt><dd class="cmt"><p>If true profiles the execution and saves the result on profileLog.</p></dd></dl><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>Due to the lack of control over Spark's optimizations, profiling will be intrinsically less precise than <a href="SequentialRun.html" class="extype" name="SequentialRun">SequentialRun</a> and <a href="ParallelRun.html" class="extype" name="ParallelRun">ParallelRun</a>,
+      moreover, due to caching, a warm restart would cause the average of multiple runs to underestimate the actual value.
+      For this reason, profiling in this class is performed only once.</p></span></dd></dl></div>
+    </li><li name="_root_.SparkRun2" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SparkRun2extendsProfilerwithProductwithSerializable"></a>
+      <a id="SparkRun2:SparkRun2"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SparkRun2.html"><span class="name">SparkRun2</span></a><span class="params">(<span name="in">in: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="out">out: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="stats">stats: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">&quot;&quot;</span></span>, <span name="profileLog">profileLog: <span class="extype" name="java.io.PrintWriter">PrintWriter</span></span>, <span name="lookahead">lookahead: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">50</span></span>, <span name="profiling">profiling: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <a href="Profiler.html" class="extype" name="Profiler">Profiler</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@SparkRun2extendsProfilerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Case class for one of the distributed runs.</p><div class="fullcomment"><div class="comment cmt"><p>Case class for one of the distributed runs. The input is split sequentially into syllables and only their occurrence is computed in a distributed fashion.
+Execution is split into four phases in order to profile each operation separately.</p></div><dl class="paramcmts block"><dt class="param">in</dt><dd class="cmt"><p>Input filename.</p></dd><dt class="param">out</dt><dd class="cmt"><p>Output filename for the syllabified text.</p></dd><dt class="param">stats</dt><dd class="cmt"><p>Output filename for the statistics on syllable occurrences.</p></dd><dt class="param">profileLog</dt><dd class="cmt"><p>File handler for the profiling log.</p></dd><dt class="param">lookahead</dt><dd class="cmt"><p>Number of lookahead characters to search for each splitting point.</p></dd><dt class="param">profiling</dt><dd class="cmt"><p>If true profiles the execution and saves the result on profileLog.</p></dd></dl><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>Due to the lack of control over Spark's optimizations, profiling will be intrinsically less precise than <a href="SequentialRun.html" class="extype" name="SequentialRun">SequentialRun</a> and <a href="ParallelRun.html" class="extype" name="ParallelRun">ParallelRun</a>,
+      moreover, due to caching, a warm restart would cause the average of multiple runs to underestimate the actual value.
+      For this reason, profiling in this class is performed only once.</p></span></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="_root_.Main" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Main"></a>
+      <a id="Main:Main"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Main$.html"><span class="name">Main</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@Main" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Program entrypoint.</p>
+    </li><li name="_root_.sbt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sbt"></a>
+      <a id="sbt:sbt"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="sbt/package.html"><span class="name">sbt</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@sbt" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="_root_.syllabification" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="syllabification"></a>
+      <a id="syllabification:syllabification"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="syllabification/package.html"><span class="name">syllabification</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="index.html#package@syllabification" title="Permalink" target="_top">
+        <img src="lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
